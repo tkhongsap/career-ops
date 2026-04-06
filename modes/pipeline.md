@@ -1,57 +1,60 @@
-# Modo: pipeline — Inbox de URLs (Second Brain)
+# Mode: pipeline — Inbox ของ URLs (Second Brain)
 
-Procesa URLs de ofertas acumuladas en `data/pipeline.md`. El usuario agrega URLs cuando quiera y luego ejecuta `/career-ops pipeline` para procesarlas todas.
+**ภาษา:** ผู้ใช้เขียนภาษาไทย → ตอบภาษาไทย | ผู้ใช้เขียนภาษาอังกฤษ → ตอบภาษาอังกฤษ
+
+ประมวลผล URLs ข้อเสนองานที่สะสมใน `data/pipeline.md` ผู้ใช้เพิ่ม URLs เมื่อใดก็ได้ แล้วรัน `/career-ops pipeline` เพื่อประมวลผลทั้งหมด
 
 ## Workflow
 
-1. **Leer** `data/pipeline.md` → buscar items `- [ ]` en la sección "Pendientes"
-2. **Para cada URL pendiente**:
-   a. Calcular siguiente `REPORT_NUM` secuencial (leer `reports/`, tomar el número más alto + 1)
-   b. **Extraer JD** usando Playwright (browser_navigate + browser_snapshot) → WebFetch → WebSearch
-   c. Si la URL no es accesible → marcar como `- [!]` con nota y continuar
-   d. **Ejecutar auto-pipeline completo**: Evaluación A-F → Report .md → PDF (si score >= 3.0) → Tracker
-   e. **Mover de "Pendientes" a "Procesadas"**: `- [x] #NNN | URL | Empresa | Rol | Score/5 | PDF ✅/❌`
-3. **Si hay 3+ URLs pendientes**, lanzar agentes en paralelo (Agent tool con `run_in_background`) para maximizar velocidad.
-4. **Al terminar**, mostrar tabla resumen:
+1. **อ่าน** `data/pipeline.md` → หา items `- [ ]` ในส่วน "Pending"
+2. **สำหรับแต่ละ URL ที่รอ**:
+   a. คำนวณ `REPORT_NUM` ถัดไปตามลำดับ (อ่าน `reports/`, เอาหมายเลขสูงสุด + 1)
+   b. **ดึง JD** โดยใช้ Playwright (browser_navigate + browser_snapshot) → WebFetch → WebSearch
+   c. ถ้า URL ไม่สามารถเข้าถึง → ทำเครื่องหมาย `- [!]` พร้อมหมายเหตุและดำเนินการต่อ
+   d. **รัน auto-pipeline ครบถ้วน**: ประเมิน A–F → Report .md → PDF (ถ้า score >= 3.0) → Tracker
+   e. **ย้ายจาก "Pending" ไปยัง "Processed"**: `- [x] #NNN | URL | บริษัท | ตำแหน่ง | Score/5 | PDF ✅/❌`
+3. **ถ้ามี 3+ URLs ที่รอ** ให้เปิด agents แบบขนาน (Agent tool กับ `run_in_background`) เพื่อเพิ่มความเร็ว
+4. **เมื่อเสร็จ** แสดงตารางสรุป:
 
 ```
-| # | Empresa | Rol | Score | PDF | Acción recomendada |
+| # | บริษัท | ตำแหน่ง | Score | PDF | การแนะนำ |
 ```
 
-## Formato de pipeline.md
+## รูปแบบ pipeline.md
 
 ```markdown
-## Pendientes
+## Pending
 - [ ] https://jobs.example.com/posting/123
-- [ ] https://boards.greenhouse.io/company/jobs/456 | Company Inc | Senior PM
+- [ ] https://www.jobthai.com/th/job/123456 | Acme TH | Senior PM
 - [!] https://private.url/job — Error: login required
 
-## Procesadas
-- [x] #143 | https://jobs.example.com/posting/789 | Acme Corp | AI PM | 4.2/5 | PDF ✅
-- [x] #144 | https://boards.greenhouse.io/xyz/jobs/012 | BigCo | SA | 2.1/5 | PDF ❌
+## Processed
+- [x] #143 | https://jobs.example.com/posting/789 | บริษัท ก | AI PM | 4.2/5 | PDF ✅
+- [x] #144 | https://www.jobsdb.com/th/en/job/123 | BigCo | SA | 2.1/5 | PDF ❌
 ```
 
-## Detección inteligente de JD desde URL
+## การตรวจจับ JD จาก URL อัจฉริยะ
 
-1. **Playwright (preferido):** `browser_navigate` + `browser_snapshot`. Funciona con todas las SPAs.
-2. **WebFetch (fallback):** Para páginas estáticas o cuando Playwright no está disponible.
-3. **WebSearch (último recurso):** Buscar en portales secundarios que indexan el JD.
+1. **Playwright (แนะนำ):** `browser_navigate` + `browser_snapshot` ทำงานกับ SPAs ทั้งหมด
+2. **WebFetch (สำรอง):** สำหรับหน้า static หรือเมื่อ Playwright ไม่พร้อมใช้งาน
+3. **WebSearch (ทางเลือกสุดท้าย):** ค้นหาใน portals รองที่ index JD
 
-**Casos especiales:**
-- **LinkedIn**: Puede requerir login → marcar `[!]` y pedir al usuario que pegue el texto
-- **PDF**: Si la URL apunta a un PDF, leerlo directamente con Read tool
-- **`local:` prefix**: Leer el archivo local. Ejemplo: `local:jds/linkedin-pm-ai.md` → leer `jds/linkedin-pm-ai.md`
+**กรณีพิเศษ:**
+- **JobThai/JobsDB**: ใช้ Playwright เพราะเป็น dynamic pages — ถ้า login required ทำเครื่องหมาย `[!]` และขอให้ผู้ใช้วางข้อความ
+- **LinkedIn**: มักต้องการ login → ทำเครื่องหมาย `[!]` และขอให้ผู้ใช้วางข้อความ
+- **PDF**: ถ้า URL ชี้ไปยัง PDF ให้อ่านโดยตรงด้วย Read tool
+- **`local:` prefix**: อ่านไฟล์ local ตัวอย่าง: `local:jds/jobsdb-pm-ai.md` → อ่าน `jds/jobsdb-pm-ai.md`
 
-## Numeración automática
+## การนับหมายเลขอัตโนมัติ
 
-1. Listar todos los archivos en `reports/`
-2. Extraer el número del prefijo (e.g., `142-medispend...` → 142)
-3. Nuevo número = máximo encontrado + 1
+1. แสดงรายการไฟล์ทั้งหมดใน `reports/`
+2. ดึงหมายเลขจาก prefix (เช่น `142-company...` → 142)
+3. หมายเลขใหม่ = ค่าสูงสุดที่พบ + 1
 
-## Sincronización de fuentes
+## การตรวจสอบ sync
 
-Antes de procesar cualquier URL, verificar sync:
+ก่อนประมวลผล URL ใด ๆ ให้ตรวจสอบ sync:
 ```bash
 node cv-sync-check.mjs
 ```
-Si hay desincronización, advertir al usuario antes de continuar.
+ถ้ามีการไม่ sync ให้แจ้งเตือนผู้ใช้ก่อนดำเนินการต่อ

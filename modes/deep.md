@@ -1,47 +1,50 @@
-# Modo: deep — Deep Research Prompt
+# Mode: deep — Deep Research Prompt
 
-Genera un prompt estructurado para Perplexity/Claude/ChatGPT con 6 ejes:
+**ภาษา:** ผู้ใช้เขียนภาษาไทย → ตอบภาษาไทย | ผู้ใช้เขียนภาษาอังกฤษ → ตอบภาษาอังกฤษ
+
+สร้าง prompt ที่มีโครงสร้างสำหรับ Perplexity / Claude / ChatGPT พร้อม 6 แกน:
 
 ```
-## Deep Research: [Empresa] — [Rol]
+## Deep Research: [บริษัท] — [ตำแหน่ง]
 
-Contexto: Estoy evaluando una candidatura para [rol] en [empresa]. Necesito información accionable para la entrevista.
+Context: ฉันกำลังประเมินการสมัครงานสำหรับตำแหน่ง [ตำแหน่ง] ที่ [บริษัท]
+ฉันต้องการข้อมูลที่นำไปใช้ได้จริงสำหรับการสัมภาษณ์
 
-### 1. Estrategia AI
-- ¿Qué productos/features usan AI/ML?
-- ¿Cuál es su stack de AI? (modelos, infra, tools)
-- ¿Tienen blog de engineering? ¿Qué publican?
-- ¿Qué papers o talks han dado sobre AI?
+### 1. กลยุทธ์และสถานะบริษัท
+- ผลิตภัณฑ์/บริการหลักคืออะไร?
+- บริษัทอยู่ในช่วงไหนของการเติบโต? (startup / SME / enterprise)
+- มีการใช้ AI/Technology อย่างไร?
+- มีข่าวล่าสุดหรือ press releases อะไรบ้าง?
 
-### 2. Movimientos recientes (últimos 6 meses)
-- ¿Contrataciones relevantes en AI/ML/product?
-- ¿Acquisitions o partnerships?
-- ¿Product launches o pivots?
-- ¿Rondas de funding o cambios de liderazgo?
+### 2. ความเคลื่อนไหวล่าสุด (6 เดือนที่ผ่านมา)
+- การจ้างงานในตำแหน่งสำคัญ?
+- การซื้อกิจการหรือ partnerships?
+- การเปิดตัวผลิตภัณฑ์ใหม่หรือการเปลี่ยนทิศทาง?
+- การระดมทุนหรือการเปลี่ยนแปลงผู้นำ?
 
-### 3. Cultura de engineering
-- ¿Cómo shipean? (cadencia de deploy, CI/CD)
-- ¿Mono-repo o multi-repo?
-- ¿Qué lenguajes/frameworks usan?
-- ¿Remote-first o office-first?
-- ¿Glassdoor/Blind reviews sobre eng culture?
+### 3. วัฒนธรรมองค์กร
+- รีวิวจาก JobThai, Glassdoor TH, Pantip ว่าอย่างไร?
+- สไตล์การบริหารและ hierarchy เป็นอย่างไร?
+- Work-life balance เป็นอย่างไร?
+- โอกาสการเติบโตสำหรับพนักงานมีอะไรบ้าง?
 
-### 4. Retos probables
-- ¿Qué problemas de scaling tienen?
-- ¿Reliability, cost, latency challenges?
-- ¿Están migrando algo? (infra, models, platforms)
-- ¿Qué pain points menciona la gente en reviews?
+### 4. ความท้าทายที่น่าจะพบ
+- ปัญหา scaling หรือ operational ที่มี?
+- อะไรที่คนในองค์กรพูดถึงบน Glassdoor / Blind?
+- กำลัง migrate หรือ transform อะไรอยู่?
 
-### 5. Competidores y diferenciación
-- ¿Quiénes son sus main competitors?
-- ¿Cuál es su moat/diferenciador?
-- ¿Cómo se posicionan vs competencia?
+### 5. คู่แข่งและจุดแตกต่าง
+- คู่แข่งหลักคือใคร? (ทั้งในไทยและระดับภูมิภาค)
+- จุดแข็ง/จุดแตกต่างคืออะไร?
+- ตำแหน่งในตลาดเทียบกับคู่แข่งเป็นอย่างไร?
 
-### 6. Ángulo del candidato
-Dado mi perfil (read from cv.md and profile.yml for specific experience):
-- ¿Qué valor único aporto a este equipo?
-- ¿Qué proyectos míos son más relevantes?
-- ¿Qué historia debería contar en la entrevista?
+### 6. มุมของผู้สมัคร
+จากโปรไฟล์ของฉัน (อ่านจาก cv.md และ profile.yml สำหรับประสบการณ์เฉพาะ):
+- คุณค่าที่ฉันนำมาให้ทีมนี้คืออะไร?
+- โปรเจกต์ไหนของฉันที่เกี่ยวข้องมากที่สุด?
+- เรื่องอะไรที่ควรเล่าในการสัมภาษณ์?
 ```
 
-Personalizar cada sección con el contexto específico de la oferta evaluada.
+ปรับแต่งแต่ละส่วนด้วย context เฉพาะจากข้อเสนองานที่ประเมิน
+
+**แหล่งข้อมูลสำหรับตลาดไทย:** JobThai, JobsDB TH, WorkVenture, Pantip (กระดาน HR/งาน), Glassdoor TH, LinkedIn, เว็บไซต์ข่าวธุรกิจไทย (Krungthep Turakij, The Standard, Techsauce)

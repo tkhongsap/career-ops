@@ -1,27 +1,29 @@
-# Modo: training — Evaluación de Formación
+# Mode: training — ประเมินการฝึกอบรม
 
-Para cada curso/cert que el candidato pregunte, evaluar 6 dimensiones:
+**ภาษา:** ผู้ใช้เขียนภาษาไทย → ตอบภาษาไทย | ผู้ใช้เขียนภาษาอังกฤษ → ตอบภาษาอังกฤษ
 
-| Dimensión | Qué evalúa |
-|-----------|------------|
-| Alineación North Star | ¿Acerca o aleja del objetivo? |
-| Señal recruiter | ¿Qué piensan HMs al ver esto en un CV? |
-| Tiempo y esfuerzo | Semanas × horas/semana |
-| Coste de oportunidad | ¿Qué no puede hacer durante ese tiempo? |
-| Riesgos | ¿Contenido outdated? ¿Brand débil? ¿Demasiado básico? |
-| Entregable portfolio | ¿Produce un artefacto demostrable? |
+สำหรับแต่ละหลักสูตร/ใบรับรองที่ผู้สมัครถาม ให้ประเมิน 6 มิติ:
 
-## Veredictos
+| มิติ | สิ่งที่ประเมิน |
+|------|---------------|
+| การเข้าแถว North Star | ช่วยหรือทำให้ห่างจากเป้าหมาย? |
+| สัญญาณ Recruiter | HMs คิดอย่างไรเมื่อเห็นสิ่งนี้ใน CV? |
+| เวลาและความพยายาม | สัปดาห์ × ชั่วโมง/สัปดาห์ |
+| ค่าเสียโอกาส | ทำอะไรไม่ได้ในช่วงเวลานั้น? |
+| ความเสี่ยง | เนื้อหา outdated? Brand อ่อน? พื้นฐานเกินไป? |
+| ผลลัพธ์ Portfolio | สร้าง artifact ที่แสดงได้ไหม? |
 
-- **HACER** → plan de 4-12 semanas con entregables semanales y scoreboard
-- **NO HACER** → alternativa mejor con justificación
-- **HACER CON TIMEBOX** (máx X semanas) → plan condensado, solo lo esencial
+## คำตัดสิน
 
-## Prioridad
+- **ทำ** → แผน 4–12 สัปดาห์พร้อมผลลัพธ์รายสัปดาห์และ scoreboard
+- **ไม่ทำ** → ทางเลือกที่ดีกว่าพร้อมเหตุผล
+- **ทำพร้อม Timebox** (สูงสุด X สัปดาห์) → แผนกระชับเฉพาะสิ่งจำเป็น
 
-Formación que mejore credibilidad en "production-grade AI":
-1. Evals y testing de LLMs
-2. Observability y monitoring
+## ลำดับความสำคัญ
+
+การฝึกอบรมที่เพิ่มความน่าเชื่อถือใน "production-grade AI":
+1. Evals และ testing ของ LLMs
+2. Observability และ monitoring
 3. Cost/reliability trade-offs
-4. AI governance y safety
+4. AI governance และ safety
 5. Enterprise AI architecture

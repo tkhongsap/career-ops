@@ -1,107 +1,116 @@
-# Modo: apply — Asistente de Aplicación en Vivo
+# Mode: apply — ผู้ช่วยกรอกใบสมัครแบบ Live
 
-Modo interactivo para cuando el candidato está rellenando un formulario de aplicación en Chrome. Lee lo que hay en pantalla, carga el contexto previo de la oferta, y genera respuestas personalizadas para cada pregunta del formulario.
+**ภาษา:** ผู้ใช้เขียนภาษาไทย → ตอบภาษาไทย | ผู้ใช้เขียนภาษาอังกฤษ → ตอบภาษาอังกฤษ
 
-## Requisitos
+Mode นี้ใช้แบบ interactive เมื่อผู้สมัครกำลังกรอกแบบฟอร์มสมัครงานใน browser อ่านสิ่งที่อยู่บนหน้าจอ โหลด context จากการประเมินก่อนหน้า และสร้างคำตอบที่ปรับแต่งสำหรับแต่ละคำถาม
 
-- **Mejor con Playwright visible**: En modo visible, el candidato ve el navegador y Claude puede interactuar con la página.
-- **Sin Playwright**: el candidato comparte un screenshot o pega las preguntas manualmente.
+## ข้อกำหนด
+
+- **ดีที่สุดกับ Playwright แบบ visible**: ผู้สมัครเห็น browser และ Claude สามารถ interact กับหน้าได้
+- **ไม่มี Playwright**: ผู้สมัครแชร์ screenshot หรือวางคำถามด้วยตนเอง
 
 ## Workflow
 
 ```
-1. DETECTAR    → Leer Chrome tab activa (screenshot/URL/título)
-2. IDENTIFICAR → Extraer empresa + rol de la página
-3. BUSCAR      → Match contra reports existentes en reports/
-4. CARGAR      → Leer report completo + Section G (si existe)
-5. COMPARAR    → ¿El rol en pantalla coincide con el evaluado? Si cambió → avisar
-6. ANALIZAR    → Identificar TODAS las preguntas del formulario visibles
-7. GENERAR     → Para cada pregunta, generar respuesta personalizada
-8. PRESENTAR   → Mostrar respuestas formateadas para copy-paste
+1. DETECT    → อ่าน Chrome tab ที่ active (screenshot/URL/title)
+2. IDENTIFY  → ดึงบริษัท + ตำแหน่งจากหน้า
+3. SEARCH    → จับคู่กับ reports ที่มีอยู่ใน reports/
+4. LOAD      → อ่าน report ครบถ้วน + Section G (ถ้ามี)
+5. COMPARE   → ตำแหน่งบนหน้าตรงกับที่ประเมินไหม? ถ้าเปลี่ยน → แจ้งเตือน
+6. ANALYZE   → ระบุคำถามทั้งหมดในฟอร์มที่มองเห็น
+7. GENERATE  → สำหรับแต่ละคำถาม สร้างคำตอบที่ปรับแต่ง
+8. PRESENT   → แสดงคำตอบในรูปแบบ copy-paste
 ```
 
-## Paso 1 — Detectar la oferta
+## ขั้นตอนที่ 1 — ตรวจจับข้อเสนองาน
 
-**Con Playwright:** Tomar snapshot de la página activa. Leer título, URL, y contenido visible.
+**กับ Playwright:** ทำ snapshot ของหน้าที่ active อ่าน title, URL และเนื้อหาที่มองเห็น
 
-**Sin Playwright:** Pedir al candidato que:
-- Comparta un screenshot del formulario (Read tool lee imágenes)
-- O pegue las preguntas del formulario como texto
-- O diga empresa + rol para que lo busquemos
+**ไม่มี Playwright:** ขอให้ผู้สมัคร:
+- แชร์ screenshot ของฟอร์ม (Read tool อ่านรูปภาพได้)
+- หรือวางคำถามจากฟอร์มเป็นข้อความ
+- หรือบอกบริษัท + ตำแหน่งเพื่อค้นหา
 
-## Paso 2 — Identificar y buscar contexto
+## ขั้นตอนที่ 2 — ระบุและค้นหา context
 
-1. Extraer nombre de empresa y título del rol de la página
-2. Buscar en `reports/` por nombre de empresa (Grep case-insensitive)
-3. Si hay match → cargar el report completo
-4. Si hay Section G → cargar los draft answers previos como base
-5. Si NO hay match → avisar y ofrecer ejecutar auto-pipeline rápido
+1. ดึงชื่อบริษัทและชื่อตำแหน่งจากหน้า
+2. ค้นหาใน `reports/` ตามชื่อบริษัท (Grep แบบ case-insensitive)
+3. ถ้ามี match → โหลด report ครบถ้วน
+4. ถ้ามี Section G → โหลด draft answers ก่อนหน้าเป็นฐาน
+5. ถ้าไม่มี match → แจ้งเตือนและเสนอรัน auto-pipeline เร็ว
 
-## Paso 3 — Detectar cambios en el rol
+## ขั้นตอนที่ 3 — ตรวจจับการเปลี่ยนแปลงในตำแหน่ง
 
-Si el rol en pantalla difiere del evaluado:
-- **Avisar al candidato**: "El rol ha cambiado de [X] a [Y]. ¿Quieres que re-evalúe o adapto las respuestas al nuevo título?"
-- **Si adaptar**: Ajustar las respuestas al nuevo rol sin re-evaluar
-- **Si re-evaluar**: Ejecutar evaluación A-F completa, actualizar report, regenerar Section G
-- **Actualizar tracker**: Cambiar título del rol en applications.md si procede
+ถ้าตำแหน่งบนหน้าต่างจากที่ประเมิน:
+- **แจ้งผู้สมัคร**: "ตำแหน่งเปลี่ยนจาก [X] เป็น [Y] ต้องการให้ประเมินใหม่หรือปรับคำตอบให้ชื่อใหม่?"
+- **ถ้าปรับ**: แก้คำตอบให้ตรงตำแหน่งใหม่โดยไม่ต้องประเมินใหม่
+- **ถ้าประเมินใหม่**: รันการประเมิน A–F ครบถ้วน อัปเดต report สร้าง Section G ใหม่
+- **อัปเดต tracker**: เปลี่ยนชื่อตำแหน่งใน applications.md ถ้าเหมาะสม
 
-## Paso 4 — Analizar preguntas del formulario
+## ขั้นตอนที่ 4 — วิเคราะห์คำถามในฟอร์ม
 
-Identificar TODAS las preguntas visibles:
-- Campos de texto libre (cover letter, why this role, etc.)
-- Dropdowns (how did you hear, work authorization, etc.)
-- Yes/No (relocation, visa, etc.)
-- Campos de salario (range, expectation)
+ระบุคำถามทั้งหมดที่มองเห็น:
+- ช่องข้อความอิสระ (cover letter, why this role ฯลฯ)
+- Dropdowns (how did you hear, work authorization ฯลฯ)
+- Yes/No (relocation, visa ฯลฯ)
+- ช่องเงินเดือน — ใช้ **฿/เดือน** สำหรับบริษัทไทย
 - Upload fields (resume, cover letter PDF)
 
-Clasificar cada pregunta:
-- **Ya respondida en Section G** → adaptar la respuesta existente
-- **Nueva pregunta** → generar respuesta desde el report + cv.md
+**สำหรับแบบฟอร์มไทย — ข้อกำหนดพิเศษ:**
+- **รูปถ่าย**: แบบฟอร์มไทยส่วนใหญ่ขอรูปถ่าย (1×1 หรือ 2×2 นิ้ว, แต่งกายสุภาพ พื้นหลังสีขาว/ฟ้า) — แจ้งเตือนผู้สมัครถ้าฟอร์มมีช่องนี้
+- **LINE ID**: บางบริษัทไทยขอ LINE ID เพื่อติดต่อ — ให้ผู้สมัครตัดสินใจว่าจะให้หรือไม่
+- **สัญชาติ/เลขบัตรประชาชน**: ฟอร์มบางอันขอข้อมูลนี้ — แจ้งเตือนผู้สมัครไว้ล่วงหน้า
+- **ที่อยู่ตามทะเบียนบ้าน**: แบบฟอร์มไทยมักแยกที่อยู่ปัจจุบันกับทะเบียนบ้าน
 
-## Paso 5 — Generar respuestas
+จำแนกแต่ละคำถาม:
+- **ตอบแล้วใน Section G** → ปรับคำตอบที่มีอยู่
+- **คำถามใหม่** → สร้างคำตอบจาก report + cv.md
 
-Para cada pregunta, generar la respuesta siguiendo:
+## ขั้นตอนที่ 5 — สร้างคำตอบ
 
-1. **Contexto del report**: Usar proof points del bloque B, historias STAR del bloque F
-2. **Section G previa**: Si existe una respuesta draft, usarla como base y refinar
-3. **Tono "I'm choosing you"**: Mismo framework del auto-pipeline
-4. **Especificidad**: Referenciar algo concreto del JD visible en pantalla
-5. **career-ops proof point**: Incluir en "Additional info" si hay campo para ello
+สำหรับแต่ละคำถาม สร้างคำตอบตาม:
 
-**Formato de output:**
+1. **Context จาก report**: ใช้ proof points จากส่วน B, เรื่อง STAR จากส่วน F
+2. **Section G ก่อนหน้า**: ถ้ามี draft answer ใช้เป็นฐานและปรับปรุง
+3. **โทน "ฉันกำลังเลือกคุณ"**: framework เดียวกับ auto-pipeline
+4. **ความเฉพาะเจาะจง**: อ้างอิงบางอย่างที่เป็นรูปธรรมจาก JD บนหน้าจอ
+
+**รูปแบบ output:**
 
 ```
-## Respuestas para [Empresa] — [Rol]
+## คำตอบสำหรับ [บริษัท] — [ตำแหน่ง]
 
-Basado en: Report #NNN | Score: X.X/5 | Arquetipo: [tipo]
+อ้างอิงจาก: Report #NNN | Score: X.X/5 | Archetype: [ประเภท]
 
 ---
 
-### 1. [Pregunta exacta del formulario]
-> [Respuesta lista para copy-paste]
+### 1. [คำถามที่แน่นอนจากฟอร์ม]
+> [คำตอบพร้อม copy-paste]
 
-### 2. [Siguiente pregunta]
-> [Respuesta]
+### 2. [คำถามถัดไป]
+> [คำตอบ]
 
 ...
 
 ---
 
-Notas:
-- [Cualquier observación sobre el rol, cambios, etc.]
-- [Sugerencias de personalización que el candidato debería revisar]
+หมายเหตุ:
+- [ข้อสังเกตใด ๆ เกี่ยวกับตำแหน่ง การเปลี่ยนแปลง ฯลฯ]
+- [คำแนะนำการปรับแต่งที่ผู้สมัครควรตรวจสอบ]
 ```
 
-## Paso 6 — Post-apply (opcional)
+## ขั้นตอนที่ 6 — หลังสมัคร (optional)
 
-Si el candidato confirma que envió la aplicación:
-1. Actualizar estado en `applications.md` de "Evaluada" a "Aplicado"
-2. Actualizar Section G del report con las respuestas finales
-3. Sugerir siguiente paso: `/career-ops contacto` para LinkedIn outreach
+ถ้าผู้สมัครยืนยันว่าส่งใบสมัครแล้ว:
+1. อัปเดตสถานะใน `applications.md` จาก "Evaluated" เป็น "Applied"
+2. อัปเดต Section G ของ report ด้วยคำตอบสุดท้าย
+3. แนะนำขั้นตอนถัดไป: `/career-ops contact` สำหรับ LinkedIn outreach
 
-## Scroll handling
+**ห้ามกด Submit/Send/Apply แทนผู้สมัคร** — ผู้สมัครต้องเป็นคนตัดสินใจเอง
 
-Si el formulario tiene más preguntas que las visibles:
-- Pedir al candidato que haga scroll y comparta otro screenshot
-- O que pegue las preguntas restantes
-- Procesar en iteraciones hasta cubrir todo el formulario
+## Scroll Handling
+
+ถ้าฟอร์มมีคำถามมากกว่าที่มองเห็น:
+- ขอให้ผู้สมัคร scroll แล้วแชร์ screenshot อีกภาพ
+- หรือวางคำถามที่เหลือ
+- ประมวลผลเป็นรอบ ๆ จนครบทั้งฟอร์ม

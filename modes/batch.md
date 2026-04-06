@@ -1,73 +1,75 @@
-# Modo: batch — Procesamiento Masivo de Ofertas
+# Mode: batch — ประมวลผลข้อเสนองานจำนวนมาก
 
-Dos modos de uso: **conductor --chrome** (navega portales en tiempo real) o **standalone** (script para URLs ya recolectadas).
+**ภาษา:** ผู้ใช้เขียนภาษาไทย → ตอบภาษาไทย | ผู้ใช้เขียนภาษาอังกฤษ → ตอบภาษาอังกฤษ
 
-## Arquitectura
+2 modes การใช้งาน: **conductor --chrome** (นำทาง portals แบบ real-time) หรือ **standalone** (script สำหรับ URLs ที่รวบรวมแล้ว)
+
+## สถาปัตยกรรม
 
 ```
 Claude Conductor (claude --chrome --dangerously-skip-permissions)
   │
-  │  Chrome: navega portales (sesiones logueadas)
-  │  Lee DOM directo — el usuario ve todo en tiempo real
+  │  Chrome: นำทาง portals (sessions ที่ login แล้ว)
+  │  อ่าน DOM โดยตรง — ผู้ใช้เห็นทุกอย่างแบบ real-time
   │
-  ├─ Oferta 1: lee JD del DOM + URL
+  ├─ ข้อเสนอที่ 1: อ่าน JD จาก DOM + URL
   │    └─► claude -p worker → report .md + PDF + tracker-line
   │
-  ├─ Oferta 2: click siguiente, lee JD + URL
+  ├─ ข้อเสนอที่ 2: คลิกถัดไป, อ่าน JD + URL
   │    └─► claude -p worker → report .md + PDF + tracker-line
   │
-  └─ Fin: merge tracker-additions → applications.md + resumen
+  └─ จบ: merge tracker-additions → applications.md + สรุป
 ```
 
-Cada worker es un `claude -p` hijo con contexto limpio de 200K tokens. El conductor solo orquesta.
+แต่ละ worker คือ `claude -p` ลูกที่มี context สะอาด 200K tokens conductor ทำหน้าที่แค่ orchestrate
 
-## Archivos
+## ไฟล์
 
 ```
 batch/
-  batch-input.tsv               # URLs (por conductor o manual)
-  batch-state.tsv               # Progreso (auto-generado, gitignored)
-  batch-runner.sh               # Script orquestador standalone
-  batch-prompt.md               # Prompt template para workers
-  logs/                         # Un log por oferta (gitignored)
-  tracker-additions/            # Líneas de tracker (gitignored)
+  batch-input.tsv               # URLs (โดย conductor หรือ manual)
+  batch-state.tsv               # ความคืบหน้า (auto-generated, gitignored)
+  batch-runner.sh               # Script orchestrator แบบ standalone
+  batch-prompt.md               # Prompt template สำหรับ workers
+  logs/                         # Log หนึ่งไฟล์ต่อข้อเสนอ (gitignored)
+  tracker-additions/            # บรรทัด tracker (gitignored)
 ```
 
-## Modo A: Conductor --chrome
+## Mode A: Conductor --chrome
 
-1. **Leer estado**: `batch/batch-state.tsv` → saber qué ya se procesó
-2. **Navegar portal**: Chrome → URL de búsqueda
-3. **Extraer URLs**: Leer DOM de resultados → extraer lista de URLs → append a `batch-input.tsv`
-4. **Para cada URL pendiente**:
-   a. Chrome: click en la oferta → leer JD text del DOM
-   b. Guardar JD a `/tmp/batch-jd-{id}.txt`
-   c. Calcular siguiente REPORT_NUM secuencial
-   d. Ejecutar via Bash:
+1. **อ่าน state**: `batch/batch-state.tsv` → รู้ว่าประมวลผลอะไรแล้ว
+2. **นำทาง portal**: Chrome → URL ค้นหา
+3. **ดึง URLs**: อ่าน DOM ผลการค้นหา → ดึงรายการ URLs → append ไปยัง `batch-input.tsv`
+4. **สำหรับแต่ละ URL ที่รอ**:
+   a. Chrome: คลิกข้อเสนอ → อ่านข้อความ JD จาก DOM
+   b. บันทึก JD ไปยัง `/tmp/batch-jd-{id}.txt`
+   c. คำนวณ REPORT_NUM ถัดไปตามลำดับ
+   d. รันผ่าน Bash:
       ```bash
       claude -p --dangerously-skip-permissions \
         --append-system-prompt-file batch/batch-prompt.md \
-        "Procesa esta oferta. URL: {url}. JD: /tmp/batch-jd-{id}.txt. Report: {num}. ID: {id}"
+        "Process this offer. URL: {url}. JD: /tmp/batch-jd-{id}.txt. Report: {num}. ID: {id}"
       ```
-   e. Actualizar `batch-state.tsv` (completed/failed + score + report_num)
-   f. Log a `logs/{report_num}-{id}.log`
-   g. Chrome: volver atrás → siguiente oferta
-5. **Paginación**: Si no hay más ofertas → click "Next" → repetir
-6. **Fin**: Merge `tracker-additions/` → `applications.md` + resumen
+   e. อัปเดต `batch-state.tsv` (completed/failed + score + report_num)
+   f. Log ไปยัง `logs/{report_num}-{id}.log`
+   g. Chrome: กลับไป → ข้อเสนอถัดไป
+5. **Pagination**: ถ้าไม่มีข้อเสนออีก → คลิก "Next" → ทำซ้ำ
+6. **จบ**: Merge `tracker-additions/` → `applications.md` + สรุป
 
-## Modo B: Script standalone
+## Mode B: Script Standalone
 
 ```bash
 batch/batch-runner.sh [OPTIONS]
 ```
 
-Opciones:
-- `--dry-run` — lista pendientes sin ejecutar
-- `--retry-failed` — solo reintenta fallidas
-- `--start-from N` — empieza desde ID N
-- `--parallel N` — N workers en paralelo
-- `--max-retries N` — intentos por oferta (default: 2)
+ตัวเลือก:
+- `--dry-run` — แสดงรายการที่รอโดยไม่รัน
+- `--retry-failed` — ลองใหม่เฉพาะที่ล้มเหลว
+- `--start-from N` — เริ่มจาก ID N
+- `--parallel N` — N workers พร้อมกัน
+- `--max-retries N` — จำนวนครั้งที่ลองต่อข้อเสนอ (default: 2)
 
-## Formato batch-state.tsv
+## รูปแบบ batch-state.tsv
 
 ```
 id	url	status	started_at	completed_at	report_num	score	error	retries
@@ -76,29 +78,29 @@ id	url	status	started_at	completed_at	report_num	score	error	retries
 3	https://...	pending	-	-	-	-	-	0
 ```
 
-## Resumabilidad
+## การกู้คืน (Resumability)
 
-- Si muere → re-ejecutar → lee `batch-state.tsv` → skip completadas
-- Lock file (`batch-runner.pid`) previene ejecución doble
-- Cada worker es independiente: fallo en oferta #47 no afecta a las demás
+- ถ้า process ตาย → รัน re-execute → อ่าน `batch-state.tsv` → ข้ามที่เสร็จแล้ว
+- Lock file (`batch-runner.pid`) ป้องกันการรันซ้ำ
+- แต่ละ worker เป็นอิสระ: ความล้มเหลวที่ข้อเสนอ #47 ไม่กระทบข้ออื่น
 
 ## Workers (claude -p)
 
-Cada worker recibe `batch-prompt.md` como system prompt. Es self-contained.
+แต่ละ worker รับ `batch-prompt.md` เป็น system prompt และเป็น self-contained
 
-El worker produce:
-1. Report `.md` en `reports/`
-2. PDF en `output/`
-3. Línea de tracker en `batch/tracker-additions/{id}.tsv`
-4. JSON de resultado por stdout
+Worker สร้าง:
+1. Report `.md` ใน `reports/`
+2. PDF ใน `output/`
+3. บรรทัด tracker ใน `batch/tracker-additions/{id}.tsv`
+4. JSON ผลลัพธ์ผ่าน stdout
 
-## Gestión de errores
+## การจัดการข้อผิดพลาด
 
-| Error | Recovery |
-|-------|----------|
-| URL inaccesible | Worker falla → conductor marca `failed`, siguiente |
-| JD detrás de login | Conductor intenta leer DOM. Si falla → `failed` |
-| Portal cambia layout | Conductor razona sobre HTML, se adapta |
-| Worker crashea | Conductor marca `failed`, siguiente. Retry con `--retry-failed` |
-| Conductor muere | Re-ejecutar → lee state → skip completadas |
-| PDF falla | Report .md se guarda. PDF queda pendiente |
+| ข้อผิดพลาด | การกู้คืน |
+|------------|-----------|
+| URL ไม่สามารถเข้าถึง | Worker ล้มเหลว → conductor ทำเครื่องหมาย `failed`, ข้ออื่นต่อ |
+| JD อยู่หลัง login | Conductor พยายามอ่าน DOM ถ้าล้มเหลว → `failed` |
+| Portal เปลี่ยน layout | Conductor วิเคราะห์ HTML, ปรับตัว |
+| Worker crash | Conductor ทำเครื่องหมาย `failed`, ข้ออื่นต่อ Retry ด้วย `--retry-failed` |
+| Conductor ตาย | Re-run → อ่าน state → ข้ามที่เสร็จ |
+| PDF ล้มเหลว | Report .md ถูกบันทึก PDF ค้างรอ |
