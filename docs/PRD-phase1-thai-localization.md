@@ -87,12 +87,17 @@ Replace current AI/ML archetypes with Thai market roles.
 | 8 | Product & Project Management | ผู้จัดการผลิตภัณฑ์/โครงการ | Product discovery, delivery, stakeholders | Product Manager, Project Manager, Scrum Master |
 | 9 | Design & Creative | ออกแบบ/สร้างสรรค์ | UX/UI, graphic, branding, video | UX Designer, Graphic Designer, Video Editor |
 | 10 | Healthcare & Services | สุขภาพและบริการ | Patient care, hospitality, food service | Nurse, Physical Therapist, Hotel Manager |
+| 11 | Education & Training | การศึกษา/อบรม | Teaching, curriculum, training, tutoring | Teacher, Lecturer, Trainer, Tutor, Academic Coordinator |
+| 12 | Logistics & Supply Chain | โลจิสติกส์/ซัพพลายเชน | Warehouse, shipping, procurement, fleet ops | Supply Chain Manager, Warehouse Supervisor, Procurement Officer, Import-Export |
+| 13 | Legal & Compliance | กฎหมาย/กำกับดูแล | Contracts, regulatory, compliance, IP, labor law | Legal Counsel, Compliance Officer, Paralegal, Corporate Secretary |
 
 **Notes:**
+- 13 archetypes covering ~85-90% of white-collar/professional roles on Thai job platforms (JobThai, JobsDB)
 - Top 3 (Sales, IT, Data/AI) are the highest-demand and highest-salary categories in Thailand 2026
-- Original Career-Ops had 6 archetypes (all AI/ML focused) — we expand to 10 for Thai market breadth
+- Original Career-Ops had 6 archetypes (all AI/ML focused) — we expand to 13 for Thai market breadth
 - Each archetype maps to JobThai and JobsDB filter categories for portal scanning
 - Users customize during onboarding (pick 2-3 that match their profile)
+- **Not targeted:** Agricultural workers, factory labor, government civil service, skilled trades — these require different application workflows
 
 ### 2. Thai Job Portals (`portals.yml`)
 
