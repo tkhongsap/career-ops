@@ -30,19 +30,23 @@ The skill applies with EQUAL rigor to ALL target roles. None is primary or secon
 
 | Archetype | Thematic axes | What they buy |
 |-----------|---------------|---------------|
-| **AI Platform / LLMOps Engineer** | Evaluation, observability, reliability, pipelines | Someone who puts AI in production with metrics |
-| **Agentic Workflows / Automation** | HITL, tooling, orchestration, multi-agent | Someone who builds reliable agent systems |
-| **Technical AI Product Manager** | GenAI/Agents, PRDs, discovery, delivery | Someone who translates business to AI product |
-| **AI Solutions Architect** | Hyperautomation, enterprise, integrations | Someone who designs end-to-end AI architectures |
-| **AI Forward Deployed Engineer** | Client-facing, fast delivery, prototyping | Someone who delivers AI solutions to clients fast |
-| **AI Transformation Lead** | Change management, adoption, org enablement | Someone who leads AI transformation in an org |
+| **ขาย/พัฒนาธุรกิจ** (Sales & Business Development) | Revenue pipeline, client acquisition, B2B/B2C, partnerships | Someone who drives revenue growth and owns client relationships |
+| **ไอที/วิศวกรซอฟต์แวร์** (IT & Software Engineering) | Full-stack, cloud, systems reliability, DevOps, QA | Someone who builds and maintains robust, scalable systems |
+| **ข้อมูลและ AI** (Data & AI) | Analytics, ML models, data pipelines, BI dashboards | Someone who turns raw data into decisions and builds AI products |
+| **การตลาดดิจิทัล** (Digital Marketing) | Performance marketing, SEO/SEM, content, social media | Someone who acquires customers and grows brand digitally |
+| **บัญชีและการเงิน** (Accounting & Finance) | Financial reporting, audit, tax compliance, banking ops | Someone who ensures financial accuracy and regulatory compliance |
+| **วิศวกรรม** (Engineering — non-software) | Manufacturing, civil/electrical/mechanical, QC, safety | Someone who designs, builds, and operates physical systems |
+| **ธุรการ/ทรัพยากรบุคคล** (Admin, HR & Operations) | Recruitment, training, HRIS, office operations | Someone who keeps organizations running and talent flowing |
+| **ผู้จัดการผลิตภัณฑ์/โครงการ** (Product & Project Management) | Discovery, roadmap, delivery, stakeholder alignment | Someone who ships products on time and on spec |
+| **ออกแบบ/สร้างสรรค์** (Design & Creative) | UX/UI, graphic design, branding, video production | Someone who translates ideas into compelling visual experiences |
+| **สุขภาพและบริการ** (Healthcare & Services) | Patient care, hospitality ops, food service, wellness | Someone who delivers human-centered service with consistency |
+| **การศึกษา/อบรม** (Education & Training) | Curriculum design, teaching, corporate training, tutoring | Someone who transfers knowledge and develops capability |
+| **โลจิสติกส์/ซัพพลายเชน** (Logistics & Supply Chain) | Warehouse ops, procurement, shipping, fleet management | Someone who moves goods efficiently and reduces supply chain cost |
+| **กฎหมาย/กำกับดูแล** (Legal & Compliance) | Contracts, regulatory compliance, IP, labor law | Someone who protects the organization from legal and regulatory risk |
 
 <!-- [CUSTOMIZE] Edit the archetypes above to match YOUR target roles.
-     For example, if you're a backend engineer, replace with:
-     - Senior Backend Engineer
-     - Staff Platform Engineer
-     - Engineering Manager
-     etc. -->
+     Pick 2-3 archetypes that match your profile. The top 3 demand categories
+     in Thailand 2026 are: Sales & BD, IT & Software Engineering, Data & AI. -->
 
 ### Adaptive Framing by Archetype
 
@@ -50,14 +54,21 @@ The skill applies with EQUAL rigor to ALL target roles. None is primary or secon
 
 | If the role is... | Emphasize about the candidate... | Proof point sources |
 |-------------------|----------------------------------|---------------------|
-| Platform / LLMOps | Production systems builder, observability, evals, closed-loop | article-digest.md + cv.md |
-| Agentic / Automation | Multi-agent orchestration, HITL, reliability, cost | article-digest.md + cv.md |
-| Technical AI PM | Product discovery, PRDs, metrics, stakeholder mgmt | cv.md + article-digest.md |
-| Solutions Architect | System design, integrations, enterprise-ready | article-digest.md + cv.md |
-| Forward Deployed Engineer | Fast delivery, client-facing, prototype to prod | cv.md + article-digest.md |
-| AI Transformation Lead | Change management, team enablement, adoption | cv.md + article-digest.md |
+| ขาย/พัฒนาธุรกิจ (Sales & BD) | Revenue generated, deal size, client retention, pipeline growth | cv.md + article-digest.md |
+| ไอที/วิศวกรซอฟต์แวร์ (IT & Software Eng.) | Systems built, stack depth, uptime/reliability, delivery speed | article-digest.md + cv.md |
+| ข้อมูลและ AI (Data & AI) | Models deployed, accuracy metrics, pipeline scale, BI impact | article-digest.md + cv.md |
+| การตลาดดิจิทัล (Digital Marketing) | CAC, ROAS, traffic growth, conversion rates, campaign ROI | cv.md + article-digest.md |
+| บัญชีและการเงิน (Accounting & Finance) | Accuracy rate, audit findings closed, cost savings, compliance wins | cv.md + article-digest.md |
+| วิศวกรรม (Engineering) | Projects completed, safety record, efficiency gains, cost reductions | cv.md + article-digest.md |
+| ธุรการ/ทรัพยากรบุคคล (Admin, HR & Ops) | Headcount managed, time-to-hire, retention rate, process improvements | cv.md + article-digest.md |
+| ผู้จัดการผลิตภัณฑ์/โครงการ (Product & PM) | Products launched, on-time delivery %, stakeholder satisfaction, OKRs | cv.md + article-digest.md |
+| ออกแบบ/สร้างสรรค์ (Design & Creative) | Portfolio quality, UX metrics, brand consistency, production volume | cv.md + article-digest.md |
+| สุขภาพและบริการ (Healthcare & Services) | Patient outcomes, service scores, certifications, team coordination | cv.md + article-digest.md |
+| การศึกษา/อบรม (Education & Training) | Student outcomes, curriculum developed, training completion rates | cv.md + article-digest.md |
+| โลจิสติกส์/ซัพพลายเชน (Logistics & SCM) | Fulfillment rate, cost per shipment, inventory accuracy, lead time | cv.md + article-digest.md |
+| กฎหมาย/กำกับดูแล (Legal & Compliance) | Contracts reviewed, compliance rate, regulatory issues resolved | cv.md + article-digest.md |
 
-<!-- [CUSTOMIZE] Map YOUR specific projects/articles to each archetype above -->
+<!-- [CUSTOMIZE] Map YOUR specific projects/proof points to each archetype above -->
 
 ### Exit Narrative (use in ALL framings)
 
@@ -75,13 +86,14 @@ Use the candidate's exit story from `config/profile.yml` to frame ALL content:
 
 ### Cross-cutting Advantage
 
-Frame profile as **"Technical builder with real-world proof"** that adapts framing to the role:
-- For PM: "builder who reduces uncertainty with prototypes then productionizes with discipline"
-- For FDE: "builder who delivers fast with observability and metrics from day 1"
-- For SA: "builder who designs end-to-end systems with real integration experience"
-- For LLMOps: "builder who puts AI in production with closed-loop quality systems"
+Frame profile as **"Proven professional with measurable results"** that adapts framing to the role:
+- For Sales/BD: "relationship builder who hits targets and expands accounts"
+- For IT/Engineering: "builder who delivers reliable systems and owns the full stack"
+- For Data/AI: "analyst who turns data into decisions and ships models to production"
+- For Product/PM: "owner who reduces uncertainty with discovery then ships with discipline"
+- For Marketing: "growth driver who optimizes for measurable outcomes, not activity"
 
-Convert "builder" into a professional signal, not a "hobby maker". Real proof points make this credible.
+Convert claimed skills into professional signals backed by numbers. Real proof points make this credible.
 
 ### Portfolio as Proof Point (use in high-value applications)
 
@@ -100,23 +112,25 @@ If the candidate has a live demo/dashboard (check profile.yml), offer access in 
 <!-- [CUSTOMIZE] Research comp ranges for YOUR target roles and update these ranges -->
 
 **General guidance:**
-- Use WebSearch for current market data (Glassdoor, Levels.fyi, Blind)
+- Salary in Thailand is quoted as **฿/month** (not annual). Always convert to monthly when comparing.
+- Use WebSearch for current market data (JobThai salary survey, Glassdoor TH, WorkVenture salary reports)
 - Frame by role title, not by skills -- titles determine comp bands
-- Contractor rates are typically 30-50% higher than employee base to account for benefits
-- Geographic arbitrage works for remote roles: lower CoL = better net
+- Senior/lead roles in Bangkok tech: typically ฿80,000–150,000/month; Data/AI roles command a premium
+- Contractor/freelance rates are typically 30-50% higher than employee base to account for no benefits
 
 ### Negotiation Scripts
 
 <!-- [CUSTOMIZE] Adapt these to your situation -->
 
-**Salary expectations (general framework):**
-> "Based on market data for this role, I'm targeting [RANGE from profile.yml]. I'm flexible on structure -- what matters is the total package and the opportunity."
+**Salary expectations (general framework — Thai market):**
+> "จากข้อมูลตลาดสำหรับตำแหน่งนี้ ผม/หนูคาดหวังอยู่ที่ [RANGE จาก profile.yml] ต่อเดือน ยืดหยุ่นได้ในเรื่องโครงสร้าง สิ่งที่สำคัญคือแพ็กเกจรวมและโอกาสในการเติบโต"
+> (EN: "Based on market data for this role, I'm targeting [RANGE from profile.yml]/month. I'm flexible on structure — what matters is the total package and the growth opportunity.")
 
-**Geographic discount pushback:**
-> "The roles I'm competitive for are output-based, not location-based. My track record doesn't change based on postal code."
+**Note:** In Thai culture, avoid aggressive salary negotiation. Anchor with data, not demands.
 
 **When offered below target:**
-> "I'm comparing with opportunities in the [higher range]. I'm drawn to [company] because of [reason]. Can we explore [target]?"
+> "ผม/หนูกำลังเปรียบเทียบกับโอกาสอื่นในช่วง [higher range] ต่อเดือน แต่สนใจ [company] เป็นพิเศษเพราะ [reason] มีความเป็นไปได้ไหมที่จะพิจารณาที่ [target]?"
+> (EN: "I'm comparing with opportunities around [higher range]/month, but I'm especially drawn to [company] because of [reason]. Is there room to explore [target]?")
 
 ### Location Policy
 

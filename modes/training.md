@@ -1,27 +1,62 @@
-# Modo: training — Evaluación de Formación
+# Mode: training — ประเมินหลักสูตร/ใบรับรอง
 
-Para cada curso/cert que el candidato pregunte, evaluar 6 dimensiones:
+**ภาษา:** ผู้ใช้เขียนภาษาไทย → ตอบภาษาไทย | ผู้ใช้เขียนภาษาอังกฤษ → ตอบภาษาอังกฤษ
 
-| Dimensión | Qué evalúa |
-|-----------|------------|
-| Alineación North Star | ¿Acerca o aleja del objetivo? |
-| Señal recruiter | ¿Qué piensan HMs al ver esto en un CV? |
-| Tiempo y esfuerzo | Semanas × horas/semana |
-| Coste de oportunidad | ¿Qué no puede hacer durante ese tiempo? |
-| Riesgos | ¿Contenido outdated? ¿Brand débil? ¿Demasiado básico? |
-| Entregable portfolio | ¿Produce un artefacto demostrable? |
+สำหรับแต่ละหลักสูตร/ใบรับรองที่ผู้สมัครสอบถาม ประเมิน 6 มิติ:
 
-## Veredictos
+| มิติ | สิ่งที่ประเมิน |
+|------|---------------|
+| ความสอดคล้องกับเป้าหมาย | ช่วยหรือห่างออกจากเป้าหมาย? |
+| สัญญาณต่อ Recruiter | HMs คิดอะไรเมื่อเห็นสิ่งนี้ใน CV? |
+| เวลาและความพยายาม | จำนวนสัปดาห์ × ชั่วโมง/สัปดาห์ |
+| ค่าเสียโอกาส | อะไรที่ทำไม่ได้ในช่วงเวลานั้น? |
+| ความเสี่ยง | เนื้อหา outdated? Brand อ่อน? ง่ายเกินไป? |
+| สิ่งที่ส่งมอบ portfolio | ผลิต artifact ที่แสดงได้หรือไม่? |
 
-- **HACER** → plan de 4-12 semanas con entregables semanales y scoreboard
-- **NO HACER** → alternativa mejor con justificación
-- **HACER CON TIMEBOX** (máx X semanas) → plan condensado, solo lo esencial
+## ผลการตัดสิน
 
-## Prioridad
+- **ทำ (DO)** → แผน 4–12 สัปดาห์พร้อม deliverables รายสัปดาห์และ scoreboard
+- **ไม่ทำ (DON'T)** → ทางเลือกที่ดีกว่าพร้อมเหตุผล
+- **ทำแต่จำกัดเวลา (DO WITH TIMEBOX)** (สูงสุด X สัปดาห์) → แผนย่อ เฉพาะสิ่งจำเป็น
 
-Formación que mejore credibilidad en "production-grade AI":
-1. Evals y testing de LLMs
-2. Observability y monitoring
-3. Cost/reliability trade-offs
-4. AI governance y safety
-5. Enterprise AI architecture
+## ลำดับความสำคัญ (ตาม Archetype)
+
+ดูจาก `_shared.md` สำหรับ archetype ของผู้ใช้ ตัวอย่างทั่วไป:
+
+**ไอที/วิศวกรซอฟต์แวร์ (IT & Software Engineering):**
+1. Cloud certifications (AWS, Azure, GCP)
+2. DevOps และ CI/CD practices
+3. Security fundamentals
+4. System design
+
+**ข้อมูลและ AI (Data & AI):**
+1. ML deployment และ MLOps
+2. Data engineering (Spark, dbt, Airflow)
+3. LLM fine-tuning และ evaluation
+4. Statistics และ experiment design
+
+**ผู้จัดการผลิตภัณฑ์/โครงการ (Product & PM):**
+1. Product discovery frameworks
+2. Data-driven decision making
+3. Agile/Scrum certification
+4. UX research methods
+
+**ขาย/พัฒนาธุรกิจ (Sales & BD):**
+1. CRM tools (Salesforce, HubSpot)
+2. Negotiation และ closing techniques
+3. Industry knowledge สำหรับ sector เป้าหมาย
+
+---
+
+## หมายเหตุวัฒนธรรมการสัมภาษณ์ในไทย
+
+**สิ่งที่ควรรู้เมื่อเตรียมสัมภาษณ์กับบริษัทไทย:**
+
+- **ความสุภาพและลำดับชั้น (Hierarchy)**: ใช้คำสุภาพเสมอ (ครับ/ค่ะ) แสดงความเคารพต่อผู้ที่มีตำแหน่งสูงกว่า อย่าขัดคำพูดในการสัมภาษณ์
+- **บุญคุณ (Bunkhun)**: แสดงความซาบซึ้งในโอกาสที่ได้สัมภาษณ์ การขอบคุณอย่างจริงใจเป็นสัญญาณที่ดี
+- **ความสามัคคี (Harmony / Face)**: หลีกเลี่ยงการวิจารณ์นายจ้างหรือเพื่อนร่วมงานเก่าอย่างตรงไปตรงมา กล่าวถึงความท้าทายในอดีตอย่าง diplomatic
+- **การแต่งกาย**: แต่งกายสุภาพและเป็นทางการ (smart formal) แม้แต่ในบริษัท tech ไทยทั่วไป — แต่งดีกว่า dress code เสมอ
+- **เวลา**: ตรงต่อเวลาเสมอ ควรมาก่อนเวลา 5–10 นาที การมาสายถือเป็นสัญญาณที่ไม่ดีอย่างมาก
+- **ใบสมัคร/เอกสาร**: บริษัทไทยมักขอรูปถ่าย, transcript มหาวิทยาลัย, สำเนาบัตรประชาชน — เตรียมไว้ล่วงหน้า
+- **การต่อรองเงินเดือน**: ใช้ข้อมูลตลาด (฿/เดือน) เป็นฐาน แนวทาง smooth กว่าได้ผลดีกว่าการกดดันในวัฒนธรรมไทย — "ขอสอบถามว่า range ของตำแหน่งนี้อยู่ที่ประมาณเท่าไหร่ครับ/ค่ะ?"
+- **ภาษา**: ถ้าสัมภาษณ์ภาษาไทย ให้ใช้ภาษาสุภาพ ถ้า interviewer พูดอังกฤษ ให้ตอบอังกฤษ บางบริษัทสลับทั้งสองภาษา

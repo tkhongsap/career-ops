@@ -1,30 +1,32 @@
-# Modo: project — Evaluación de Proyecto Portfolio
+# Mode: project — ประเมินโปรเจกต์ Portfolio
 
-Scoring 6 dimensiones (1-5):
+**ภาษา:** ผู้ใช้เขียนภาษาไทย → ตอบภาษาไทย | ผู้ใช้เขียนภาษาอังกฤษ → ตอบภาษาอังกฤษ
 
-| Dimensión | Peso | 5 = ... | 1 = ... |
-|-----------|------|---------|---------|
-| Señal para roles target | 25% | Directamente demuestra skill del JD | No relacionado |
-| Unicidad | 20% | Nadie ha hecho esto | Todo el mundo lo tiene |
-| Demo-ability | 20% | Live demo en 2 min | Solo código, no visual |
-| Potencial de métricas | 15% | Métricas claras (latency, cost, accuracy) | Sin métricas posibles |
-| Tiempo a MVP | 10% | 1 semana | 3+ meses |
-| Potencial de historia STAR | 10% | Historia rica con trade-offs | Solo implementación |
+Scoring 6 มิติ (1–5):
 
-## Requisitos de "Interview Pack"
+| มิติ | น้ำหนัก | 5 = ... | 1 = ... |
+|------|---------|---------|---------|
+| สัญญาณสำหรับ target roles | 25% | แสดง skill ของ JD โดยตรง | ไม่เกี่ยวข้อง |
+| ความเป็นเอกลักษณ์ | 20% | ไม่มีใครทำแบบนี้ | ทุกคนมีเหมือนกัน |
+| Demo-ability | 20% | live demo ใน 2 นาที | มีแค่โค้ด ไม่มี visual |
+| ศักยภาพด้าน metrics | 15% | metrics ชัดเจน (latency, cost, accuracy) | ไม่สามารถวัดได้ |
+| เวลาสู่ MVP | 10% | 1 สัปดาห์ | 3+ เดือน |
+| ศักยภาพ STAR story | 10% | เรื่องราวที่ rich พร้อม trade-offs | แค่ implementation |
 
-Para cada proyecto aprobado:
-1. **One-pager**: producto + arquitectura + métricas + plan de evaluación
-2. **Demo**: URL live o walkthrough grabado de 2 min
-3. **Postmortem**: qué funcionó, qué no, mitigaciones
+## ข้อกำหนด "Interview Pack"
 
-## Plan 80/20
+สำหรับแต่ละโปรเจกต์ที่ผ่านการพิจารณา:
+1. **One-pager**: ผลิตภัณฑ์ + สถาปัตยกรรม + metrics + แผนการประเมิน
+2. **Demo**: URL live หรือ walkthrough ที่บันทึกไว้ 2 นาที
+3. **Postmortem**: อะไรที่ได้ผล, อะไรที่ไม่ได้ผล, วิธีแก้ไข
 
-- Semana 1 → MVP con métrica core
-- Semana 2 → polish + interview pack
+## แผน 80/20
 
-## Veredictos
+- สัปดาห์ที่ 1 → MVP พร้อม metric หลัก
+- สัปดาห์ที่ 2 → polish + interview pack
 
-- **CONSTRUIR** → plan con milestones semanales
-- **SKIP** → por qué y qué hacer en su lugar
-- **PIVOTAR A [alternativa]** → variante más impactante
+## ผลการตัดสิน
+
+- **สร้าง (BUILD)** → แผนพร้อม milestones รายสัปดาห์
+- **ข้าม (SKIP)** → เหตุผลและสิ่งที่ควรทำแทน
+- **เปลี่ยนทิศทาง (PIVOT TO [ทางเลือก])** → variant ที่มี impact มากกว่า

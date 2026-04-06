@@ -1,23 +1,31 @@
-# Modo: tracker — Tracker de Aplicaciones
+# Mode: tracker — ติดตามการสมัครงาน
 
-Lee y muestra `data/applications.md`.
+**ภาษา:** ผู้ใช้เขียนภาษาไทย → ตอบภาษาไทย | ผู้ใช้เขียนภาษาอังกฤษ → ตอบภาษาอังกฤษ
 
-**Formato del tracker:**
+อ่านและแสดง `data/applications.md`
+
+**รูปแบบ tracker:**
 ```markdown
-| # | Fecha | Empresa | Rol | Score | Estado | PDF | Report |
+| # | วันที่ | บริษัท | ตำแหน่ง | Score | สถานะ | PDF | Report |
 ```
 
-Estados posibles: `Evaluada` → `Aplicado` → `Respondido` → `Contacto` → `Entrevista` → `Oferta` / `Rechazada` / `Descartada` / `NO APLICAR`
+สถานะที่เป็นไปได้: `Evaluated` → `Applied` → `Responded` → `Interview` → `Offer` / `Rejected` / `Discarded` / `SKIP`
 
-- `Aplicado` = el candidato envió su candidatura
-- `Respondido` = Un recruiter/empresa contactó y el candidato respondió (inbound)
-- `Contacto` = El candidato contactó proactivamente a alguien de la empresa (outbound, ej: LinkedIn power move)
+- `Applied` = ผู้สมัครส่งใบสมัครแล้ว
+- `Responded` = Recruiter/บริษัทติดต่อมาและผู้สมัครตอบกลับแล้ว (inbound)
+- `Interview` = อยู่ในกระบวนการสัมภาษณ์
+- `Offer` = ได้รับข้อเสนองาน
+- `Rejected` = บริษัทปฏิเสธ
+- `Discarded` = ผู้สมัครตัดสินใจไม่สมัครหรือข้อเสนอปิดแล้ว
+- `SKIP` = ไม่เหมาะสม ไม่ต้องสมัคร
 
-Si el usuario pide actualizar un estado, editar la fila correspondiente.
+ถ้าผู้ใช้ขอให้อัปเดตสถานะ ให้แก้ไขแถวที่ตรงกัน
 
-Mostrar también estadísticas:
-- Total de aplicaciones
-- Por estado
-- Score promedio
-- % con PDF generado
-- % con report generado
+แสดงสถิติด้วย:
+- จำนวนการสมัครทั้งหมด
+- แยกตามสถานะ
+- Score เฉลี่ย
+- % ที่มี PDF
+- % ที่มี report
+
+**สำหรับ score ต่ำ (< 3.0):** แจ้งเตือนผู้ใช้ถ้ามีข้อเสนอที่ score ต่ำอยู่ในสถานะ Applied — แนะนำให้ใช้เวลากับข้อเสนอที่ match ดีกว่า

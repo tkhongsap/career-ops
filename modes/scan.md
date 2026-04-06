@@ -1,172 +1,173 @@
-# Modo: scan — Portal Scanner (Descubrimiento de Ofertas)
+# Mode: scan — Portal Scanner (ค้นหาข้อเสนองาน)
 
-Escanea portales de empleo configurados, filtra por relevancia de título, y añade nuevas ofertas al pipeline para evaluación posterior.
+**ภาษา:** ผู้ใช้เขียนภาษาไทย → ตอบภาษาไทย | ผู้ใช้เขียนภาษาอังกฤษ → ตอบภาษาอังกฤษ
 
-## Ejecución recomendada
+สแกน portals หางานที่กำหนดค่าไว้ กรองตามความเกี่ยวข้องของชื่อตำแหน่ง และเพิ่มข้อเสนอใหม่ไปยัง pipeline สำหรับการประเมิน
 
-Ejecutar como subagente para no consumir contexto del main:
+## การรันที่แนะนำ
+
+รันเป็น subagent เพื่อไม่ให้ใช้ context ของ main:
 
 ```
 Agent(
     subagent_type="general-purpose",
-    prompt="[contenido de este archivo + datos específicos]",
+    prompt="[เนื้อหาของไฟล์นี้ + ข้อมูลเฉพาะ]",
     run_in_background=True
 )
 ```
 
-## Configuración
+## การกำหนดค่า
 
-Leer `portals.yml` que contiene:
-- `search_queries`: Lista de queries WebSearch con `site:` filters por portal (descubrimiento amplio)
-- `tracked_companies`: Empresas específicas con `careers_url` para navegación directa
-- `title_filter`: Keywords positive/negative/seniority_boost para filtrado de títulos
+อ่าน `portals.yml` ที่มี:
+- `search_queries`: รายการ queries WebSearch พร้อม `site:` filters ต่อ portal (การค้นพบในวงกว้าง)
+- `tracked_companies`: บริษัทเฉพาะพร้อม `careers_url` สำหรับการนำทางโดยตรง
+- `title_filter`: Keywords positive/negative/seniority_boost สำหรับกรองชื่อตำแหน่ง
 
-## Estrategia de descubrimiento (3 niveles)
+## กลยุทธ์การค้นพบ (3 ระดับ)
 
-### Nivel 1 — Playwright directo (PRINCIPAL)
+### ระดับ 1 — Playwright โดยตรง (หลัก)
 
-**Para cada empresa en `tracked_companies`:** Navegar a su `careers_url` con Playwright (`browser_navigate` + `browser_snapshot`), leer TODOS los job listings visibles, y extraer título + URL de cada uno. Este es el método más fiable porque:
-- Ve la página en tiempo real (no resultados cacheados de Google)
-- Funciona con SPAs (Ashby, Lever, Workday)
-- Detecta ofertas nuevas al instante
-- No depende de la indexación de Google
+**สำหรับแต่ละบริษัทใน `tracked_companies`:** นำทางไปยัง `careers_url` ด้วย Playwright (`browser_navigate` + `browser_snapshot`) อ่าน job listings ที่มองเห็นทั้งหมด และดึง title + URL จากแต่ละอัน วิธีนี้น่าเชื่อถือที่สุดเพราะ:
+- เห็นหน้าแบบ real-time (ไม่ใช่ผลลัพธ์ที่ cache จาก Google)
+- ทำงานกับ SPAs (Ashby, Lever, Workday)
+- ตรวจจับข้อเสนอใหม่ทันที
+- ไม่ขึ้นอยู่กับ Google indexing
 
-**Cada empresa DEBE tener `careers_url` en portals.yml.** Si no la tiene, buscarla una vez, guardarla, y usar en futuros scans.
+**แต่ละบริษัท ต้องมี `careers_url` ใน portals.yml** ถ้าไม่มีให้ค้นหาหนึ่งครั้ง บันทึก และใช้ในการสแกนครั้งต่อไป
 
-### Nivel 2 — Greenhouse API (COMPLEMENTARIO)
+### ระดับ 2 — Greenhouse API (เสริม)
 
-Para empresas con Greenhouse, la API JSON (`boards-api.greenhouse.io/v1/boards/{slug}/jobs`) devuelve datos estructurados limpios. Usar como complemento rápido de Nivel 1 — es más rápido que Playwright pero solo funciona con Greenhouse.
+สำหรับบริษัทที่ใช้ Greenhouse, API JSON (`boards-api.greenhouse.io/v1/boards/{slug}/jobs`) ให้ข้อมูลที่สะอาด ใช้เป็น complement ด่วนของระดับ 1 — เร็วกว่า Playwright แต่ทำงานเฉพาะกับ Greenhouse
 
-### Nivel 3 — WebSearch queries (DESCUBRIMIENTO AMPLIO)
+### ระดับ 3 — WebSearch queries (การค้นพบในวงกว้าง)
 
-Los `search_queries` con `site:` filters cubren portales de forma transversal (todos los Ashby, todos los Greenhouse, etc.). Útil para descubrir empresas NUEVAS que aún no están en `tracked_companies`, pero los resultados pueden estar desfasados.
+`search_queries` พร้อม `site:` filters ครอบคลุม portals แบบ cross-section มีประโยชน์สำหรับค้นพบบริษัทใหม่ที่ยังไม่มีใน `tracked_companies` แต่ผลลัพธ์อาจล้าหลัง
 
-**Prioridad de ejecución:**
-1. Nivel 1: Playwright → todas las `tracked_companies` con `careers_url`
-2. Nivel 2: API → todas las `tracked_companies` con `api:`
-3. Nivel 3: WebSearch → todos los `search_queries` con `enabled: true`
+**Portal ไทยที่รองรับ:**
+- **JobThai**: `site:jobthai.com`
+- **JobsDB TH**: `site:th.jobsdb.com`
+- **WorkVenture**: `site:workventure.com`
+- **LinkedIn TH**: `site:linkedin.com/jobs`
 
-Los niveles son aditivos — se ejecutan todos, los resultados se mezclan y deduplicar.
+**ลำดับการรัน:**
+1. ระดับ 1: Playwright → `tracked_companies` ทั้งหมดที่มี `careers_url`
+2. ระดับ 2: API → `tracked_companies` ทั้งหมดที่มี `api:`
+3. ระดับ 3: WebSearch → `search_queries` ทั้งหมดที่มี `enabled: true`
+
+ระดับเป็น additive — รันทั้งหมด ผสมผลลัพธ์ และ dedup
 
 ## Workflow
 
-1. **Leer configuración**: `portals.yml`
-2. **Leer historial**: `data/scan-history.tsv` → URLs ya vistas
-3. **Leer dedup sources**: `data/applications.md` + `data/pipeline.md`
+1. **อ่าน config**: `portals.yml`
+2. **อ่านประวัติ**: `data/scan-history.tsv` → URLs ที่เห็นแล้ว
+3. **อ่าน dedup sources**: `data/applications.md` + `data/pipeline.md`
 
-4. **Nivel 1 — Playwright scan** (paralelo en batches de 3-5):
-   Para cada empresa en `tracked_companies` con `enabled: true` y `careers_url` definida:
-   a. `browser_navigate` a la `careers_url`
-   b. `browser_snapshot` para leer todos los job listings
-   c. Si la página tiene filtros/departamentos, navegar las secciones relevantes
-   d. Para cada job listing extraer: `{title, url, company}`
-   e. Si la página pagina resultados, navegar páginas adicionales
-   f. Acumular en lista de candidatos
-   g. Si `careers_url` falla (404, redirect), intentar `scan_query` como fallback y anotar para actualizar la URL
+4. **ระดับ 1 — Playwright scan** (ขนานใน batches ละ 3–5):
+   สำหรับแต่ละบริษัทใน `tracked_companies` ที่มี `enabled: true` และ `careers_url` ที่กำหนด:
+   a. `browser_navigate` ไปยัง `careers_url`
+   b. `browser_snapshot` เพื่ออ่าน job listings ทั้งหมด
+   c. ถ้าหน้ามี filters/departments ให้นำทางส่วนที่เกี่ยวข้อง
+   d. สำหรับแต่ละ job listing ดึง: `{title, url, company}`
+   e. ถ้าหน้าแบ่งหน้า ให้นำทางหน้าเพิ่มเติม
+   f. สะสมในรายการ candidates
+   g. ถ้า `careers_url` ล้มเหลว (404, redirect) ลอง `scan_query` เป็น fallback และจดเพื่ออัปเดต URL
 
-5. **Nivel 2 — Greenhouse APIs** (paralelo):
-   Para cada empresa en `tracked_companies` con `api:` definida y `enabled: true`:
-   a. WebFetch de la URL de API → JSON con lista de jobs
-   b. Para cada job extraer: `{title, url, company}`
-   c. Acumular en lista de candidatos (dedup con Nivel 1)
+5. **ระดับ 2 — Greenhouse APIs** (ขนาน):
+   สำหรับแต่ละบริษัทใน `tracked_companies` ที่มี `api:` และ `enabled: true`:
+   a. WebFetch URL ของ API → JSON พร้อมรายการ jobs
+   b. สำหรับแต่ละ job ดึง: `{title, url, company}`
+   c. สะสมในรายการ candidates (dedup กับระดับ 1)
 
-6. **Nivel 3 — WebSearch queries** (paralelo si posible):
-   Para cada query en `search_queries` con `enabled: true`:
-   a. Ejecutar WebSearch con el `query` definido
-   b. De cada resultado extraer: `{title, url, company}`
-      - **title**: del título del resultado (antes del " @ " o " | ")
-      - **url**: URL del resultado
-      - **company**: después del " @ " en el título, o extraer del dominio/path
-   c. Acumular en lista de candidatos (dedup con Nivel 1+2)
+6. **ระดับ 3 — WebSearch queries** (ขนานถ้าเป็นไปได้):
+   สำหรับแต่ละ query ใน `search_queries` ที่มี `enabled: true`:
+   a. รัน WebSearch ด้วย `query` ที่กำหนด
+   b. จากแต่ละผลลัพธ์ดึง: `{title, url, company}`
+   c. สะสมในรายการ candidates (dedup กับระดับ 1+2)
 
-6. **Filtrar por título** usando `title_filter` de `portals.yml`:
-   - Al menos 1 keyword de `positive` debe aparecer en el título (case-insensitive)
-   - 0 keywords de `negative` deben aparecer
-   - `seniority_boost` keywords dan prioridad pero no son obligatorios
+7. **กรองตาม title** โดยใช้ `title_filter` ของ `portals.yml`:
+   - อย่างน้อย 1 keyword จาก `positive` ต้องปรากฏในชื่อ (case-insensitive)
+   - 0 keywords จาก `negative` ต้องปรากฏ
+   - Keywords `seniority_boost` ให้ความสำคัญแต่ไม่บังคับ
 
-7. **Deduplicar** contra 3 fuentes:
-   - `scan-history.tsv` → URL exacta ya vista
-   - `applications.md` → empresa + rol normalizado ya evaluado
-   - `pipeline.md` → URL exacta ya en pendientes o procesadas
+8. **Dedup** กับ 3 แหล่ง:
+   - `scan-history.tsv` → URL นั้นเห็นแล้ว
+   - `applications.md` → บริษัท + ตำแหน่งที่ normalize แล้วประเมินแล้ว
+   - `pipeline.md` → URL นั้นมีอยู่ใน pending หรือ processed แล้ว
 
-8. **Para cada oferta nueva que pase filtros**:
-   a. Añadir a `pipeline.md` sección "Pendientes": `- [ ] {url} | {company} | {title}`
-   b. Registrar en `scan-history.tsv`: `{url}\t{date}\t{query_name}\t{title}\t{company}\tadded`
+9. **สำหรับแต่ละข้อเสนอใหม่ที่ผ่านการกรอง**:
+   a. เพิ่มไปยัง `pipeline.md` ส่วน "Pending": `- [ ] {url} | {company} | {title}`
+   b. บันทึกใน `scan-history.tsv`: `{url}\t{date}\t{query_name}\t{title}\t{company}\tadded`
 
-9. **Ofertas filtradas por título**: registrar en `scan-history.tsv` con status `skipped_title`
-10. **Ofertas duplicadas**: registrar con status `skipped_dup`
+10. **ข้อเสนอที่กรองตาม title**: บันทึกใน `scan-history.tsv` พร้อมสถานะ `skipped_title`
+11. **ข้อเสนอซ้ำ**: บันทึกพร้อมสถานะ `skipped_dup`
 
-## Extracción de título y empresa de WebSearch results
+## การดึง title และ company จากผลลัพธ์ WebSearch
 
-Los resultados de WebSearch vienen en formato: `"Job Title @ Company"` o `"Job Title | Company"` o `"Job Title — Company"`.
+ผลลัพธ์ WebSearch มาในรูปแบบ: `"ชื่อตำแหน่ง @ บริษัท"` หรือ `"ชื่อตำแหน่ง | บริษัท"` หรือ `"ชื่อตำแหน่ง — บริษัท"`
 
-Patrones de extracción por portal:
-- **Ashby**: `"Senior AI PM (Remote) @ EverAI"` → title: `Senior AI PM`, company: `EverAI`
+Pattern การดึงตาม portal:
+- **JobThai**: `"วิศวกรซอฟต์แวร์ | บริษัท ABC"` → title: `วิศวกรซอฟต์แวร์`, company: `ABC`
+- **JobsDB TH**: `"Data Analyst at XYZ Company"` → title: `Data Analyst`, company: `XYZ Company`
+- **Ashby**: `"Senior PM (Remote) @ EverAI"` → title: `Senior PM`, company: `EverAI`
 - **Greenhouse**: `"AI Engineer at Anthropic"` → title: `AI Engineer`, company: `Anthropic`
-- **Lever**: `"Product Manager - AI @ Temporal"` → title: `Product Manager - AI`, company: `Temporal`
 
-Regex genérico: `(.+?)(?:\s*[@|—–-]\s*|\s+at\s+)(.+?)$`
+Regex ทั่วไป: `(.+?)(?:\s*[@|—–-]\s*|\s+at\s+|\s*\|\s*)(.+?)$`
 
-## URLs privadas
+## URLs ส่วนตัว
 
-Si se encuentra una URL no accesible públicamente:
-1. Guardar el JD en `jds/{company}-{role-slug}.md`
-2. Añadir a pipeline.md como: `- [ ] local:jds/{company}-{role-slug}.md | {company} | {title}`
+ถ้าพบ URL ที่ไม่สามารถเข้าถึงสาธารณะ:
+1. บันทึก JD ไปยัง `jds/{company}-{role-slug}.md`
+2. เพิ่มใน pipeline.md เป็น: `- [ ] local:jds/{company}-{role-slug}.md | {company} | {title}`
 
 ## Scan History
 
-`data/scan-history.tsv` trackea TODAS las URLs vistas:
+`data/scan-history.tsv` ติดตาม URLs ทั้งหมดที่เห็น:
 
 ```
 url	first_seen	portal	title	company	status
-https://...	2026-02-10	Ashby — AI PM	PM AI	Acme	added
-https://...	2026-02-10	Greenhouse — SA	Junior Dev	BigCo	skipped_title
-https://...	2026-02-10	Ashby — AI PM	SA AI	OldCo	skipped_dup
+https://...	2026-02-10	JobThai — IT	วิศวกรซอฟต์แวร์	บริษัท ก	added
+https://...	2026-02-10	JobsDB — Data	Junior Dev	BigCo TH	skipped_title
 ```
 
-## Resumen de salida
+## สรุป output
 
 ```
 Portal Scan — {YYYY-MM-DD}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
-Queries ejecutados: N
-Ofertas encontradas: N total
-Filtradas por título: N relevantes
-Duplicadas: N (ya evaluadas o en pipeline)
-Nuevas añadidas a pipeline.md: N
+Queries ที่รัน: N
+ข้อเสนอที่พบ: N รายการ
+กรองตาม title: N รายการที่เกี่ยวข้อง
+ซ้ำ: N (ประเมินแล้วหรืออยู่ใน pipeline)
+ใหม่ที่เพิ่มเข้า pipeline.md: N
 
   + {company} | {title} | {query_name}
   ...
 
-→ Ejecuta /career-ops pipeline para evaluar las nuevas ofertas.
+→ รัน /career-ops pipeline เพื่อประเมินข้อเสนอใหม่
 ```
 
-## Gestión de careers_url
+## การจัดการ careers_url
 
-Cada empresa en `tracked_companies` debe tener `careers_url` — la URL directa a su página de ofertas. Esto evita buscarlo cada vez.
+แต่ละบริษัทใน `tracked_companies` ต้องมี `careers_url` เพื่อหลีกเลี่ยงการค้นหาทุกครั้ง
 
-**Patrones conocidos por plataforma:**
+**Patterns ที่รู้จักตาม platform:**
 - **Ashby:** `https://jobs.ashbyhq.com/{slug}`
-- **Greenhouse:** `https://job-boards.greenhouse.io/{slug}` o `https://job-boards.eu.greenhouse.io/{slug}`
+- **Greenhouse:** `https://job-boards.greenhouse.io/{slug}`
 - **Lever:** `https://jobs.lever.co/{slug}`
-- **Custom:** La URL propia de la empresa (ej: `https://openai.com/careers`)
+- **JobThai:** `https://www.jobthai.com/th/company/{id}/jobs`
+- **JobsDB TH:** `https://th.jobsdb.com/th-th/{company-slug}`
+- **Custom:** URL หน้า careers ของบริษัทเอง
 
-**Si `careers_url` no existe** para una empresa:
-1. Intentar el patrón de su plataforma conocida
-2. Si falla, hacer un WebSearch rápido: `"{company}" careers jobs`
-3. Navegar con Playwright para confirmar que funciona
-4. **Guardar la URL encontrada en portals.yml** para futuros scans
+**ถ้า `careers_url` ไม่มี** สำหรับบริษัท:
+1. ลอง pattern ของ platform ที่รู้จัก
+2. ถ้าล้มเหลว ทำ WebSearch: `"{company}" careers jobs สมัครงาน`
+3. นำทางด้วย Playwright เพื่อยืนยันว่าใช้งานได้
+4. **บันทึก URL ที่พบใน portals.yml** สำหรับการสแกนครั้งต่อไป
 
-**Si `careers_url` devuelve 404 o redirect:**
-1. Anotar en el resumen de salida
-2. Intentar scan_query como fallback
-3. Marcar para actualización manual
+## การบำรุงรักษา portals.yml
 
-## Mantenimiento del portals.yml
-
-- **SIEMPRE guardar `careers_url`** cuando se añade una empresa nueva
-- Añadir nuevos queries según se descubran portales o roles interesantes
-- Desactivar queries con `enabled: false` si generan demasiado ruido
-- Ajustar keywords de filtrado según evolucionen los roles target
-- Añadir empresas a `tracked_companies` cuando interese seguirlas de cerca
-- Verificar `careers_url` periódicamente — las empresas cambian de plataforma ATS
+- **บันทึก `careers_url` เสมอ** เมื่อเพิ่มบริษัทใหม่
+- เพิ่ม queries ใหม่เมื่อค้นพบ portals หรือตำแหน่งที่น่าสนใจ
+- ปิดใช้ queries ด้วย `enabled: false` ถ้าสร้าง noise มากเกินไป
+- ปรับ keywords ตามที่ target roles เปลี่ยนไป
+- ตรวจสอบ `careers_url` เป็นระยะ — บริษัทเปลี่ยน ATS platform

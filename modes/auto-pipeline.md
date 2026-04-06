@@ -1,39 +1,41 @@
-# Modo: auto-pipeline — Pipeline Completo Automático
+# Mode: auto-pipeline — Pipeline อัตโนมัติครบถ้วน
 
-Cuando el usuario pega un JD (texto o URL) sin sub-comando explícito, ejecutar TODO el pipeline en secuencia:
+**ภาษา:** ผู้ใช้เขียนภาษาไทย → ตอบภาษาไทย | ผู้ใช้เขียนภาษาอังกฤษ → ตอบภาษาอังกฤษ
 
-## Paso 0 — Extraer JD
+เมื่อผู้ใช้วาง JD (ข้อความหรือ URL) โดยไม่ระบุ sub-command ให้รัน pipeline ทั้งหมดตามลำดับ:
 
-Si el input es una **URL** (no texto de JD pegado), seguir esta estrategia para extraer el contenido:
+## ขั้นตอนที่ 0 — ดึงข้อมูล JD
 
-**Orden de prioridad:**
+หาก input เป็น **URL** (ไม่ใช่ข้อความ JD ที่วางโดยตรง) ให้ใช้กลยุทธ์นี้:
 
-1. **Playwright (preferido):** La mayoría de portales de empleo (Lever, Ashby, Greenhouse, Workday) son SPAs. Usar `browser_navigate` + `browser_snapshot` para renderizar y leer el JD.
-2. **WebFetch (fallback):** Para páginas estáticas (ZipRecruiter, WeLoveProduct, company career pages).
-3. **WebSearch (último recurso):** Buscar título del rol + empresa en portales secundarios que indexan el JD en HTML estático.
+**ลำดับความสำคัญ:**
 
-**Si ningún método funciona:** Pedir al candidato que pegue el JD manualmente o comparta un screenshot.
+1. **Playwright (แนะนำ):** portal งานส่วนใหญ่ (Lever, Ashby, Greenhouse, Workday, JobsDB, JobThai) เป็น SPAs ใช้ `browser_navigate` + `browser_snapshot` เพื่อ render และอ่าน JD
+2. **WebFetch (สำรอง):** สำหรับหน้าที่เป็น static (career pages ของบริษัท)
+3. **WebSearch (ทางเลือกสุดท้าย):** ค้นหาชื่อตำแหน่ง + บริษัท ใน portal อื่นที่ index JD แบบ HTML static
 
-**Si el input es texto de JD** (no URL): usar directamente, sin necesidad de fetch.
+**หากทุกวิธีล้มเหลว:** ขอให้ผู้สมัครวาง JD ด้วยตนเองหรือแชร์ screenshot
 
-## Paso 1 — Evaluación A-F
-Ejecutar exactamente igual que el modo `oferta` (leer `modes/oferta.md` para todos los bloques A-F).
+**หาก input เป็นข้อความ JD:** ใช้โดยตรง ไม่ต้อง fetch
 
-## Paso 2 — Guardar Report .md
-Guardar la evaluación completa en `reports/{###}-{company-slug}-{YYYY-MM-DD}.md` (ver formato en `modes/oferta.md`).
+## ขั้นตอนที่ 1 — ประเมิน A–F
+รันเหมือนกับ mode `evaluate` ทุกประการ (อ่าน `modes/evaluate.md` สำหรับส่วน A–F ทั้งหมด)
 
-## Paso 3 — Generar PDF
-Ejecutar el pipeline completo de `pdf` (leer `modes/pdf.md`).
+## ขั้นตอนที่ 2 — บันทึก Report .md
+บันทึกการประเมินที่สมบูรณ์ใน `reports/{###}-{company-slug}-{YYYY-MM-DD}.md` (ดูรูปแบบใน `modes/evaluate.md`)
 
-## Paso 4 — Draft Application Answers (solo si score >= 4.5)
+## ขั้นตอนที่ 3 — สร้าง PDF
+รัน pipeline ครบถ้วนของ `pdf` (อ่าน `modes/pdf.md`)
 
-Si el score final es >= 4.5, generar borrador de respuestas para el formulario de aplicación:
+## ขั้นตอนที่ 4 — Draft Application Answers (เฉพาะถ้า score >= 4.5)
 
-1. **Extraer preguntas del formulario**: Usar Playwright para navegar al formulario y hacer snapshot. Si no se pueden extraer, usar las preguntas genéricas.
-2. **Generar respuestas** siguiendo el tono (ver abajo).
-3. **Guardar en el report** como sección `## G) Draft Application Answers`.
+หาก score สุดท้าย >= 4.5 ให้สร้างร่างคำตอบสำหรับแบบฟอร์มสมัคร:
 
-### Preguntas genéricas (usar si no se pueden extraer del formulario)
+1. **ดึงคำถามจากฟอร์ม**: ใช้ Playwright นำทางไปยังฟอร์มและทำ snapshot หากดึงไม่ได้ ใช้คำถาม generic
+2. **สร้างคำตอบ** ตามโทนด้านล่าง
+3. **บันทึกใน report** เป็นส่วน `## G) Draft Application Answers`
+
+### คำถาม Generic (ใช้ถ้าดึงจากฟอร์มไม่ได้)
 
 - Why are you interested in this role?
 - Why do you want to work at [Company]?
@@ -41,27 +43,27 @@ Si el score final es >= 4.5, generar borrador de respuestas para el formulario d
 - What makes you a good fit for this position?
 - How did you hear about this role?
 
-### Tono para Form Answers
+### โทนสำหรับ Form Answers
 
-**Posición: "I'm choosing you."** el candidato tiene opciones y está eligiendo esta empresa por razones concretas.
+**ท่าทีของผู้สมัคร: "ฉันกำลังเลือกคุณ"** — ผู้สมัครมีตัวเลือกและกำลังเลือกบริษัทนี้ด้วยเหตุผลที่เป็นรูปธรรม
 
-**Reglas de tono:**
-- **Confiado sin arrogancia**: "I've spent the past year building production AI agent systems — your role is where I want to apply that experience next"
-- **Selectivo sin soberbia**: "I've been intentional about finding a team where I can contribute meaningfully from day one"
-- **Específico y concreto**: Siempre referenciar algo REAL del JD o de la empresa, y algo REAL de la experiencia del candidato
-- **Directo, sin fluff**: 2-4 frases por respuesta. Sin "I'm passionate about..." ni "I would love the opportunity to..."
-- **El hook es la prueba, no la afirmación**: En vez de "I'm great at X", decir "I built X that does Y"
+**กฎโทน:**
+- **มั่นใจโดยไม่อวดดี**: "I've spent the past year building production AI agent systems — your role is where I want to apply that experience next"
+- **เลือกสรรโดยไม่หยิ่ง**: "I've been intentional about finding a team where I can contribute meaningfully from day one"
+- **เฉพาะเจาะจงและเป็นรูปธรรม**: อ้างอิงบางอย่างที่เป็น real จาก JD หรือบริษัท และบางอย่างที่เป็น real จากประสบการณ์ผู้สมัคร
+- **ตรงประเด็น ไม่มีคำพูดโก้เก๋**: 2–4 ประโยคต่อคำตอบ ห้ามใช้ "I'm passionate about..." หรือ "I would love the opportunity to..."
+- **Hook คือหลักฐาน ไม่ใช่การยืนยัน**: แทน "I'm great at X" ให้พูดว่า "I built X that does Y"
 
-**Framework por pregunta:**
-- **Why this role?** → "Your [specific thing] maps directly to [specific thing I built]."
-- **Why this company?** → Mencionar algo concreto sobre la empresa. "I've been using [product] for [time/purpose]."
-- **Relevant experience?** → Un proof point cuantificado. "Built [X] that [metric]. Sold the company in 2025."
+**Framework ต่อคำถาม:**
+- **Why this role?** → "Your [สิ่งเฉพาะ] maps directly to [สิ่งที่ฉันสร้าง]."
+- **Why this company?** → กล่าวถึงบางอย่างที่เป็นรูปธรรมเกี่ยวกับบริษัท
+- **Relevant experience?** → proof point ที่มีตัวเลข "Built [X] that [metric]."
 - **Good fit?** → "I sit at the intersection of [A] and [B], which is exactly where this role lives."
-- **How did you hear?** → Honesto: "Found through [portal/scan], evaluated against my criteria, and it scored highest."
+- **How did you hear?** → ซื่อสัตย์: "Found through [portal/scan], evaluated against my criteria, and it scored highest."
 
-**Idioma**: Siempre en el idioma del JD (EN default). Aplicar `/tech-translate`.
+**ภาษา**: ใช้ภาษาเดียวกับ JD (EN default) ปรับตามวัฒนธรรมบริษัท
 
-## Paso 5 — Actualizar Tracker
-Registrar en `data/applications.md` con todas las columnas incluyendo Report y PDF en ✅.
+## ขั้นตอนที่ 5 — อัปเดต Tracker
+บันทึกใน `data/applications.md` พร้อมทุกคอลัมน์รวม Report และ PDF เป็น ✅
 
-**Si algún paso falla**, continuar con los siguientes y marcar el paso fallido como pendiente en el tracker.
+**หากขั้นตอนใดล้มเหลว** ให้ดำเนินการต่อกับขั้นตอนถัดไปและทำเครื่องหมายขั้นตอนที่ล้มเหลวเป็น pending ใน tracker
