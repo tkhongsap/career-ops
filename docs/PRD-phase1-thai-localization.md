@@ -71,18 +71,28 @@ Translate all 14 mode files from Spanish/English → Thai/English bilingual.
 
 **Archetype Rewrite (`_shared.md`):**
 
-Replace current AI/ML archetypes with Thai market roles:
+Replace current AI/ML archetypes with Thai market roles.
 
-| Archetype | Thai | What they buy |
-|-----------|------|---------------|
-| Software Engineer | วิศวกรซอฟต์แวร์ | Full-stack, backend, mobile dev |
-| Data Analyst / Scientist | นักวิเคราะห์ข้อมูล | SQL, Python, BI, dashboards |
-| Digital Marketing | การตลาดดิจิทัล | Performance marketing, social, content |
-| Product Manager | ผู้จัดการผลิตภัณฑ์ | Product discovery, roadmap, metrics |
-| AI/ML Engineer | วิศวกร AI/ML | LLM, agents, MLOps, NLP |
-| Business Development | พัฒนาธุรกิจ | B2B sales, partnerships, enterprise |
-| UX/UI Designer | นักออกแบบ UX/UI | User research, Figma, design systems |
-| Operations / Admin | ปฏิบัติการ/ธุรการ | Office management, coordination |
+**Source:** JobsDB Thailand top 10 job functions (by registered candidates), JobThai categories, Thai 2026 job market trends.
+
+| # | Archetype (EN) | สายงาน (TH) | What employers buy | Example roles |
+|---|----------------|-------------|--------------------|----|  
+| 1 | Sales & Business Development | ขาย/พัฒนาธุรกิจ | Revenue growth, client relationships, B2B/B2C | Sales Executive, BD Manager, Account Manager |
+| 2 | IT & Software Engineering | ไอที/วิศวกรซอฟต์แวร์ | Build & maintain systems, full-stack, cloud | Developer, Programmer, DevOps, QA |
+| 3 | Data & AI | ข้อมูลและ AI | Analytics, ML, data pipelines, BI | Data Analyst, Data Engineer, AI Engineer |
+| 4 | Digital Marketing | การตลาดดิจิทัล | Performance marketing, content, SEO/SEM | Performance Marketer, Content Creator, SEO Specialist |
+| 5 | Accounting & Finance | บัญชีและการเงิน | Financial reporting, audit, tax, banking | Accountant, Financial Analyst, Auditor |
+| 6 | Engineering (non-software) | วิศวกรรม | Manufacturing, civil, electrical, mechanical | Production Engineer, QC Engineer, Project Engineer |
+| 7 | Admin, HR & Operations | ธุรการ/ทรัพยากรบุคคล | Recruitment, training, office ops | HR Officer, Admin, Recruiter, Coordinator |
+| 8 | Product & Project Management | ผู้จัดการผลิตภัณฑ์/โครงการ | Product discovery, delivery, stakeholders | Product Manager, Project Manager, Scrum Master |
+| 9 | Design & Creative | ออกแบบ/สร้างสรรค์ | UX/UI, graphic, branding, video | UX Designer, Graphic Designer, Video Editor |
+| 10 | Healthcare & Services | สุขภาพและบริการ | Patient care, hospitality, food service | Nurse, Physical Therapist, Hotel Manager |
+
+**Notes:**
+- Top 3 (Sales, IT, Data/AI) are the highest-demand and highest-salary categories in Thailand 2026
+- Original Career-Ops had 6 archetypes (all AI/ML focused) — we expand to 10 for Thai market breadth
+- Each archetype maps to JobThai and JobsDB filter categories for portal scanning
+- Users customize during onboarding (pick 2-3 that match their profile)
 
 ### 2. Thai Job Portals (`portals.yml`)
 
