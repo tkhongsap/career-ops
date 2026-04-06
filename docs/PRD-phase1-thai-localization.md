@@ -11,7 +11,12 @@
 
 ## Objective
 
-Transform Career-Ops from a Spanish/English CLI tool into a **bilingual Thai/English** job search pipeline targeting **Thai workers and professionals**. This is Phase 1 (localization + adaptation). Phase 2 (SaaS web app) follows separately.
+Transform Career-Ops from a Spanish/English CLI tool into a **bilingual Thai/English** job search pipeline targeting **Thai workers and professionals**.
+
+**Strategy: Option C — Start with A, evolve to B.**
+- **Phase 1 (this PRD):** Thai localization of the CLI tool — proves the evaluation engine works in Thai
+- **Phase 2:** Wrap in a web app with user accounts, dashboard, Stripe/PromptPay billing
+- **Phase 3:** Auto-scanning (AI finds jobs for you daily from JobThai/JobsDB) — the "jobs find YOU while you sleep" product
 
 ## Success Criteria
 
