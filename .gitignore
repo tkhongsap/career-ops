@@ -22,6 +22,9 @@ portals.yml
 # Generated
 .resolved-prompt-*
 node_modules/
+.playwright-mcp/
+batch/tracker-additions/merged/
+*.bak
 
 # OS
 .DS_Store
